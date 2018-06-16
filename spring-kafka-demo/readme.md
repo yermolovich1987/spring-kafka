@@ -4,6 +4,8 @@ To run this demo you will need to execute next setup steps for Kafka:
 2) Start the Kafka servers by executing (Corresponding configurations should be defined with different ids and listener ports):
     bin/kafka-server-start.sh config/server.properties
 
+Note*. I was not able to configure application to consume messages from multiple nodes. It simply does not receive messages
+without any errors. Check this if will have time and desire.
     bin/kafka-server-start.sh config/server.1.properties
     bin/kafka-server-start.sh config/server.2.properties
     bin/kafka-server-start.sh config/server.3.properties
@@ -12,8 +14,6 @@ To run this demo you will need to execute next setup steps for Kafka:
 
     bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic simple
 
-
---------
 
 To send a test messages to particular topic the next test endpoint could be used:
 http://localhost:8080/send?topic=firstTopic&message=%22Hello%20world%22

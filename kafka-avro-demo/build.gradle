@@ -68,3 +68,14 @@ avro {
 	fieldVisibility = "PRIVATE"
 }
 
+schemaRegistry {
+	url = 'http://localhost:8081'
+	credentials {
+		username = 'basicauthentication-username'
+		password = 'basicauthentication-password'
+	} //optional
+	register {
+		subject('TestTopic1-value', 'src/main/avro/DummyMessage.avsc')
+	}
+}
+

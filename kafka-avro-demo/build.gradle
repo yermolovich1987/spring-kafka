@@ -1,0 +1,70 @@
+// TODO check why this is meant legacy plugin registration
+buildscript {
+	repositories {
+		maven {
+			url 'https://plugins.gradle.org/m2/'
+		}
+		maven {
+			url 'http://packages.confluent.io/maven/'
+		}
+	}
+	dependencies {
+		classpath 'com.github.imflog:kafka-schema-registry-gradle-plugin:0.9.0'
+		// TODO Check other plugins.
+		classpath 'com.commercehub.gradle.plugin:gradle-avro-plugin:0.21.0'
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.3.2.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+	id 'com.github.imflog.kafka-schema-registry-gradle-plugin' version '0.9.0'
+	id 'com.avast.gradle.docker-compose' version '0.13.0'
+//	id 'com.commercehub.gradle.plugin.avro' version '0.9.1'
+}
+apply plugin: "com.commercehub.gradle.plugin.avro"
+apply plugin: "com.github.imflog.kafka-schema-registry-gradle-plugin"
+
+group = 'com.dimsaco'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		url 'http://packages.confluent.io/maven/'
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'io.confluent:kafka-avro-serializer:5.4.1'
+	// Needed for gradle plugin for avro classes generation
+	compile "org.apache.avro:avro:1.10.0"
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+// Configuration for plugin that generates Java classes for Avro
+avro {
+	fieldVisibility = "PRIVATE"
+}
+

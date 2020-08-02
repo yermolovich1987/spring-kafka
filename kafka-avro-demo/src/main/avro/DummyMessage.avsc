@@ -1,0 +1,9 @@
+{
+  "namespace": "com.dimasco.avrodemo",
+  "name": "DummyMessage",
+  "type": "record",
+  "fields": [
+    {"name": "name", "type": "string"},
+    { "name": "age", "type": "int" }
+  ]
+}
